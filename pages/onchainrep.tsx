@@ -1,53 +1,37 @@
 import type { NextPage } from 'next'
 import { Header } from '../components/Header'
-import useSWR from 'swr'
-import { request, RequestDocument } from 'graphql-request'
+import { useContractRead } from 'wagmi'
+import * as CurationManager from "../curation/curation/artifacts/contracts/CurationManager.sol/CurationManager.json"
+import Fetcher from '../components/Fetcher'
 
-const API_ENDPOINT = "https://api.zora.co/graphql";
+const onchainrep: NextPage = () => {
 
-const collection1 = "0x13385748626ed20227957e7f3c31e03542be664d"
+    // curator read call
+    const { data, isError, isLoading, isSuccess, isFetching  } = useContractRead({
+        addressOrName: "0x9c9FA39424F755F2a82eE01cb6a91212F300f55d", 
+        contractInterface: CurationManager.abi,
+        functionName: 'viewAllListings',
+        watch: true,
+        onError(error) {
+            console.log("error: ", isError)
+        },
+        onSuccess(data) {
+            console.log("Array of current collections --> ", data)
+        }  
+    })    
 
-const collection1_events_query = `
-    query ListCollections {
-        events(
-            where: {collectionAddresses: "${collection1}"}
-            filter: {eventTypes: TRANSFER_EVENT}
-            networks: {chain: GOERLI, network: ETHEREUM}
-            pagination: {limit: 200}
-        ) {
-            nodes {
-                collectionAddress
-                eventType
-                tokenId
-                transactionInfo {
-                    blockTimestamp
-                    blockNumber
-                }
-            }
-        }
-    }
-`
-
-const fetcher = (query: RequestDocument) => request(API_ENDPOINT, query)
-
-const Api: NextPage = () => {
-
-    const { data: collection1_events } = useSWR(collection1_events_query, fetcher, {
-        refreshInterval: 1000
-    })
-
-    console.log("all events: ", collection1_events)
+    const dataForFetcher = data ? data : []
 
     return (
         <div className='flex flex-col justify-center h-screen min-h-screen'>
             <Header />
             <main className="w-full flex flex-row flex-wrap justify-center self-center items-center">        
                 <div className="text-white">
-                    {JSON.stringify(collection1_events)}
+                    <Fetcher curatedAddresses={dataForFetcher} />
                 </div>
             </main>
         </div>
     )
 }
 
-export default Api
+export default onchainrep
