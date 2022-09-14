@@ -1,9 +1,6 @@
 import { Header } from '../components/Header'
-import { useState } from 'react'
 import useSWR from 'swr'
 import { request, RequestDocument } from 'graphql-request'
-import { useContractRead } from 'wagmi'
-import * as CurationManager from "../curation/curation/artifacts/contracts/CurationManager.sol/CurationManager.json"
 
 const API_ENDPOINT = "https://api.zora.co/graphql";
 
