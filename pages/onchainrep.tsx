@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { Header } from '../components/Header'
 import { useContractRead } from 'wagmi'
-import * as CurationManager from "../curation2/artifacts/contracts/CurationManager.sol/CurationManager.json"
+import * as CurationManager from "../curation/artifacts/contracts/CurationManager.sol/CurationManager.json"
 import Fetcher from '../components/Fetcher'
 
 const onchainrep: NextPage = () => {
