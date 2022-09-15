@@ -19,7 +19,7 @@ export const Header = () => {
           HOME
           </a>
         </Link>
-        <Link
+        {/* <Link
           href="/indexer"
         >
           <a className="hover:text-[#f53bc3]">
@@ -39,7 +39,14 @@ export const Header = () => {
           <a className="hover:text-[#f53bc3]">
             PROTOCOL
           </a>
-        </Link>
+        </Link> */}
+        <Link
+          href="/onchainrep"
+        >
+          <a className="hover:text-[#f53bc3]">
+            ONCHAIN-REP
+          </a>
+        </Link>        
       </div>
     </div>
   )
